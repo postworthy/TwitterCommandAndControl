@@ -1,20 +1,24 @@
 ##Project Intro
-==================================
+----------------------------------
 
 The purpose of this project is to show a simple example of how a command and control system could be built using twitter. 
 This command and control library provides the basic building blocks to track and send messages between 2 systems using Twitter as the communication channel.
 
 ##Project Features
-==================================
+----------------------------------
 
 * C# 
 * .NET 4.5
 * Twitter Streaming API Interface
 * Linq2Twitter
+* AForge.Video
+* Reverse Shell
+* Reverse Screen Capture
+* Reverse Webcam
 * Simple Project
 
 ##Tools
-==================================
+----------------------------------
 
 If you are not familiar with C# then you will want to have a look at these free development tools
 
@@ -27,7 +31,7 @@ If you are not familiar with C# then you will want to have a look at these free 
 <a href="http://monodevelop.com/">MonoDevelop</a>
 
 ##Before You Build
-==================================
+----------------------------------
 
 Before you build you will want to sign up for a twitter account and sign up for a <a href="https://dev.twitter.com/">twitter api key</a>. 
 This project uses the Twitter API to communicate. You will also want to authorize your twitter account to be used by your application.
@@ -39,7 +43,7 @@ You will need to create the private.config file for the application to connect t
 The contents will need to contain the Twitter API keys (see the test project app.config). 
 
 ##Software Licensing Policy
-==================================
+----------------------------------
 
 #####For Open Source Projects
 

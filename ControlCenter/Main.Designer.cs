@@ -36,6 +36,7 @@
             this.CommandButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.ScreenCapture = new System.Windows.Forms.Button();
+            this.Webcam = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ShellPrefix
@@ -44,7 +45,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ShellPrefix.Location = new System.Drawing.Point(52, 9);
             this.ShellPrefix.Name = "ShellPrefix";
-            this.ShellPrefix.Size = new System.Drawing.Size(306, 20);
+            this.ShellPrefix.Size = new System.Drawing.Size(381, 20);
             this.ShellPrefix.TabIndex = 0;
             this.ShellPrefix.Text = "#TwitterCommandAndControl";
             // 
@@ -60,7 +61,7 @@
             // ShellButton
             // 
             this.ShellButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ShellButton.Location = new System.Drawing.Point(364, 7);
+            this.ShellButton.Location = new System.Drawing.Point(439, 7);
             this.ShellButton.Name = "ShellButton";
             this.ShellButton.Size = new System.Drawing.Size(75, 23);
             this.ShellButton.TabIndex = 2;
@@ -76,7 +77,7 @@
             this.ShellOutput.Location = new System.Drawing.Point(12, 35);
             this.ShellOutput.Multiline = true;
             this.ShellOutput.Name = "ShellOutput";
-            this.ShellOutput.Size = new System.Drawing.Size(548, 289);
+            this.ShellOutput.Size = new System.Drawing.Size(700, 289);
             this.ShellOutput.TabIndex = 3;
             // 
             // CommandText
@@ -85,13 +86,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.CommandText.Location = new System.Drawing.Point(49, 332);
             this.CommandText.Name = "CommandText";
-            this.CommandText.Size = new System.Drawing.Size(430, 20);
+            this.CommandText.Size = new System.Drawing.Size(582, 20);
             this.CommandText.TabIndex = 4;
             // 
             // CommandButton
             // 
             this.CommandButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.CommandButton.Location = new System.Drawing.Point(485, 330);
+            this.CommandButton.Location = new System.Drawing.Point(637, 330);
             this.CommandButton.Name = "CommandButton";
             this.CommandButton.Size = new System.Drawing.Size(75, 23);
             this.CommandButton.TabIndex = 5;
@@ -112,7 +113,7 @@
             // ScreenCapture
             // 
             this.ScreenCapture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ScreenCapture.Location = new System.Drawing.Point(445, 7);
+            this.ScreenCapture.Location = new System.Drawing.Point(520, 7);
             this.ScreenCapture.Name = "ScreenCapture";
             this.ScreenCapture.Size = new System.Drawing.Size(115, 23);
             this.ScreenCapture.TabIndex = 7;
@@ -120,11 +121,23 @@
             this.ScreenCapture.UseVisualStyleBackColor = true;
             this.ScreenCapture.Click += new System.EventHandler(this.ScreenCapture_Click);
             // 
+            // Webcam
+            // 
+            this.Webcam.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Webcam.Location = new System.Drawing.Point(641, 7);
+            this.Webcam.Name = "Webcam";
+            this.Webcam.Size = new System.Drawing.Size(71, 23);
+            this.Webcam.TabIndex = 8;
+            this.Webcam.Text = "Webcam";
+            this.Webcam.UseVisualStyleBackColor = true;
+            this.Webcam.Click += new System.EventHandler(this.Webcam_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(572, 364);
+            this.ClientSize = new System.Drawing.Size(724, 364);
+            this.Controls.Add(this.Webcam);
             this.Controls.Add(this.ScreenCapture);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.CommandButton);
@@ -150,6 +163,7 @@
         private System.Windows.Forms.Button CommandButton;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button ScreenCapture;
+        private System.Windows.Forms.Button Webcam;
     }
 }
 

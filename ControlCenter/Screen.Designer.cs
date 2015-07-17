@@ -52,6 +52,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Screen";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Screen_FormClosed);
             this.Load += new System.EventHandler(this.Screen_Load);
             ((System.ComponentModel.ISupportInitialize)(this.ScreenDisplay)).EndInit();
             this.ResumeLayout(false);

