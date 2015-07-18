@@ -27,8 +27,8 @@ namespace ControlCenter
 
         ~Screen()
         {
-            if (reader != null) reader.Dispose();
-            if (Client != null) Client.Close();
+            try { if (reader != null) reader.Dispose(); } catch { }
+            try { if (Client != null) Client.Close(); } catch { }
         }
 
         private void Screen_Load(object sender, EventArgs e)
@@ -73,8 +73,8 @@ namespace ControlCenter
 
         private void Screen_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (reader != null) reader.Dispose();
-            if (Client != null) Client.Close();
+            try { if (reader != null) reader.Dispose(); } catch { }
+            try { if (Client != null) Client.Close(); } catch { }
         }
     }
 }

