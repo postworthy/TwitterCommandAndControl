@@ -13,7 +13,8 @@ namespace TwitterCommandAndControl
         public static string GetIP()
         {
 #if DEBUG
-            return "127.0.0.1";
+            ip = "127.0.0.1";
+            return ip;
 #else
             if (ip == null)
             {
