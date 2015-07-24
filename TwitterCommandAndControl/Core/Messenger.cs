@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TwitterCommandAndControl
+namespace TwitterCommandAndControl.Core
 {
     public static class Messenger
     {

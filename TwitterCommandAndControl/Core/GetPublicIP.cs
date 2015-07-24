@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TwitterCommandAndControl
+namespace TwitterCommandAndControl.Core
 {
     public static class GetPublicIP
     {

