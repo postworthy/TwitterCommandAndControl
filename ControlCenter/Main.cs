@@ -78,7 +78,7 @@ namespace ControlCenter
                 }
                 catch { }
                 finally { }
-                ShellOutput.Invoke(new MethodInvoker(() => { ShellOutput.AppendText("Reverse shell lost!" + Environment.NewLine); }));
+                //ShellOutput.Invoke(new MethodInvoker(() => { ShellOutput.AppendText("Reverse shell lost!" + Environment.NewLine); }));
             });
         }
 
