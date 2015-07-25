@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ShellPrefix = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.ShellButton = new System.Windows.Forms.Button();
             this.ShellOutput = new System.Windows.Forms.TextBox();
@@ -38,17 +37,8 @@
             this.ScreenCapture = new System.Windows.Forms.Button();
             this.Webcam = new System.Windows.Forms.Button();
             this.KeyLogger = new System.Windows.Forms.Button();
+            this.ShellPrefix = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
-            // 
-            // ShellPrefix
-            // 
-            this.ShellPrefix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ShellPrefix.Location = new System.Drawing.Point(52, 9);
-            this.ShellPrefix.Name = "ShellPrefix";
-            this.ShellPrefix.Size = new System.Drawing.Size(368, 20);
-            this.ShellPrefix.TabIndex = 0;
-            this.ShellPrefix.Text = "#TwitterCommandAndControl";
             // 
             // label1
             // 
@@ -147,11 +137,24 @@
             this.KeyLogger.UseVisualStyleBackColor = true;
             this.KeyLogger.Click += new System.EventHandler(this.KeyLogger_Click);
             // 
+            // ShellPrefix
+            // 
+            this.ShellPrefix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ShellPrefix.FormattingEnabled = true;
+            this.ShellPrefix.Items.AddRange(new object[] {
+            "#TwitterCommandAndControl"});
+            this.ShellPrefix.Location = new System.Drawing.Point(49, 9);
+            this.ShellPrefix.Name = "ShellPrefix";
+            this.ShellPrefix.Size = new System.Drawing.Size(380, 21);
+            this.ShellPrefix.TabIndex = 10;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(794, 364);
+            this.Controls.Add(this.ShellPrefix);
             this.Controls.Add(this.KeyLogger);
             this.Controls.Add(this.Webcam);
             this.Controls.Add(this.ScreenCapture);
@@ -161,9 +164,9 @@
             this.Controls.Add(this.ShellOutput);
             this.Controls.Add(this.ShellButton);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.ShellPrefix);
             this.Name = "Main";
             this.Text = "Control Center";
+            this.Load += new System.EventHandler(this.Main_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -171,7 +174,6 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox ShellPrefix;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button ShellButton;
         private System.Windows.Forms.TextBox ShellOutput;
@@ -181,6 +183,7 @@
         private System.Windows.Forms.Button ScreenCapture;
         private System.Windows.Forms.Button Webcam;
         private System.Windows.Forms.Button KeyLogger;
+        private System.Windows.Forms.ComboBox ShellPrefix;
     }
 }
 

