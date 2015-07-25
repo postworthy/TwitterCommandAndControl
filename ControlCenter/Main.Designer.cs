@@ -141,6 +141,7 @@
             // 
             this.ShellPrefix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.ShellPrefix.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ShellPrefix.FormattingEnabled = true;
             this.ShellPrefix.Items.AddRange(new object[] {
             "#TwitterCommandAndControl"});
@@ -148,6 +149,7 @@
             this.ShellPrefix.Name = "ShellPrefix";
             this.ShellPrefix.Size = new System.Drawing.Size(380, 21);
             this.ShellPrefix.TabIndex = 10;
+            this.ShellPrefix.SelectedIndexChanged += new System.EventHandler(this.ShellPrefix_SelectedIndexChanged);
             // 
             // Main
             // 

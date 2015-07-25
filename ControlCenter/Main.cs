@@ -195,6 +195,15 @@ namespace ControlCenter
         private void ShellOutput_DoubleClick(object sender, EventArgs e)
         {
 
+        }
+
+        private void ShellPrefix_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (Client != null && Client.Connected)
+            {
+                Client.Close();
+                Client = null;
+            }
         }     
     }
 }
